@@ -17,7 +17,11 @@ function getConfig(config) {
         base: 'Chrome',
         flags: ['--no-sandbox']
       }
-    }
+    },
+    reporters: [
+      'progress',
+      'material'
+    ]
   };
 
   if (process.env.TRAVIS) {

@@ -186,7 +186,6 @@ function getConfig(config) {
     browserConsoleLogOptions: {
       level: 'log'
     },
-    reporters: ['mocha', 'coverage'],
     port: 9876,
     colors: logger.logColor,
     logLevel: config.LOG_INFO,
