@@ -81,7 +81,6 @@ function serve(argv, skyPagesConfig, webpack, WebpackDevServer) {
         logger.error(err);
       }
     });
-    process.exit(exitCode || 0);
   }).catch(err => logger.error(err));
 }
 

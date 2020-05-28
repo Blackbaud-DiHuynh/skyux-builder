@@ -22,6 +22,9 @@ function spawnCypress(localUrl) {
     config: {
       baseUrl: localUrl
     }
+  }).then((result) => {
+    logger.info('Good job!');
+    process.exit(0);
   });
 }
 
