@@ -80,7 +80,7 @@ function spawnSelenium(configPath) {
         });
       });
 
-    // Otherwise we need to prep protractor's selenium
+      // Otherwise we need to prep protractor's selenium
     } else {
       chromeDriverManager.update()
         .then(() => resolve())

@@ -5,6 +5,7 @@ const portfinder = require('portfinder');
 const logger = require('@blackbaud/skyux-logger');
 const assetsProcessor = require('../lib/assets-processor');
 const localeAssetsProcessor = require('../lib/locale-assets-processor');
+const cypress = require('cypress');
 
 /**
  * Let users configure port via skyuxconfig.json first.
@@ -32,16 +33,26 @@ function getPort(config, skyPagesConfig) {
   });
 }
 
+function spawnCypress(port) {
+  logger.info('Running Cypress');
+  cypress.run({
+    browser: 'chrome',
+    config: {
+      baseUrl: `https://localhost:${port}`,
+    }
+  });
+  process.on('exit', killServers);
+}
 /**
  * Executes the serve command.
- * @name serve
+ * @name cypressE2e
  * @name {Object} argv
  * @name {SkyPagesConfig} skyPagesConfig
  * @name {Webpack} webpack
  * @name {WebpackDevServer} WebpackDevServer
  * @returns null
  */
-function serve(argv, skyPagesConfig, webpack, WebpackDevServer) {
+function cypressE2e(argv, skyPagesConfig, webpack, WebpackDevServer) {
 
   const webpackConfig = require('../config/webpack/serve.webpack.config');
   let config = webpackConfig.getWebpackConfig(argv, skyPagesConfig);
@@ -77,12 +88,10 @@ function serve(argv, skyPagesConfig, webpack, WebpackDevServer) {
     const compiler = webpack(config);
     const server = new WebpackDevServer(compiler, config.devServer);
     server.listen(config.devServer.port, 'localhost', (err) => {
-      if (err) {
-        logger.error(err);
-      }
+      spawnCypress(port);
     });
-    process.exit(exitCode || 0);
   }).catch(err => logger.error(err));
+
 }
 
-module.exports = serve;
+module.exports = cypressE2e;
