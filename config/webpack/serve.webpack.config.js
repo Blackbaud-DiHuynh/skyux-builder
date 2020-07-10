@@ -6,27 +6,12 @@ const webpackMerge = require('webpack-merge');
 const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
-const logger = require('@blackbaud/skyux-logger');
 
 const skyPagesConfigUtil = require('../sky-pages/sky-pages.config');
 const browser = require('../../cli/utils/browser');
 const certResolver = require('../../cli/utils/cert-resolver');
 
 const tsLoaderUtil = require('./ts-loader-rule');
-
-const cypress = require('cypress');
-function spawnCypress(localUrl) {
-  logger.info('Running Cypress');
-  cypress.run({
-    browser: 'chrome',
-    config: {
-      baseUrl: localUrl
-    }
-  }).then((result) => {
-    logger.info('Good job!');
-    process.exit(0);
-  });
-}
 
 /**
  * Returns the default webpackConfig.
@@ -45,8 +30,7 @@ function getWebpackConfig(argv, skyPagesConfig) {
     this.plugin('done', (stats) => {
       if (!launched) {
         launched = true;
-        let localUrl = browser(argv, skyPagesConfig, stats, this.options.devServer.port);
-        spawnCypress(localUrl);
+        browser(argv, skyPagesConfig, stats, this.options.devServer.port);
       }
     });
   }
@@ -61,7 +45,7 @@ function getWebpackConfig(argv, skyPagesConfig) {
 
     devtool: 'source-map',
 
-    watch: false,
+    watch: true,
 
     // Do not use hashes during a serve.
     output: {

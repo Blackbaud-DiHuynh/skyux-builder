@@ -7,12 +7,14 @@ const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
 const logger = require('@blackbaud/skyux-logger');
+
 const skyPagesConfigUtil = require('../sky-pages/sky-pages.config');
 const browser = require('../../cli/utils/browser');
 const certResolver = require('../../cli/utils/cert-resolver');
-const tsLoaderUtil = require('./ts-loader-rule');
-const cypress = require('cypress');
 
+const tsLoaderUtil = require('./ts-loader-rule');
+
+const cypress = require('cypress');
 function spawnCypress(localUrl) {
   logger.info('Running Cypress');
   cypress.run({
@@ -20,6 +22,9 @@ function spawnCypress(localUrl) {
     config: {
       baseUrl: localUrl
     }
+  }).then((result) => {
+    logger.info('Good job!');
+    process.exit(0);
   });
 }
 
@@ -30,7 +35,10 @@ function spawnCypress(localUrl) {
  */
 function getWebpackConfig(argv, skyPagesConfig) {
 
-
+  /**
+   * Opens the host service url.
+   * @name WebpackPluginDone
+   */
   function WebpackPluginDone() {
 
     let launched = false;
@@ -50,17 +58,13 @@ function getWebpackConfig(argv, skyPagesConfig) {
 
   return webpackMerge(common, {
     mode: 'development',
-
     devtool: 'source-map',
-
-    watch: true,
-
+    watch: false,
     // Do not use hashes during a serve.
     output: {
       filename: '[name].js',
       chunkFilename: '[name].chunk.js'
     },
-
     module: {
       rules: [
         tsLoaderUtil.getRule(skyPagesConfig.runtime.command),
