@@ -1,8 +1,7 @@
 /*jshint node: true*/
-/*global browser*/
+/*global browser, element, by*/
 'use strict';
 
-const os = require('os');
 const fs = require('fs-extra');
 const path = require('path');
 const rimraf = require('rimraf');
@@ -19,15 +18,11 @@ const skyuxConfigPath = path.resolve(process.cwd(), tmp, 'skyuxconfig.json');
 const appExtrasPath = path.resolve(process.cwd(), tmp, 'src/app/app-extras.module.ts');
 const cliPath = `../e2e/shared/cli`;
 
-// This is normally provided by the CLI.
-const sslCert = path.resolve(`${os.homedir()}/.skyux/certs/skyux-server.crt`);
-const sslKey = path.resolve(`${os.homedir()}/.skyux/certs/skyux-server.key`);
-
 let skyuxConfigOriginal;
 let appExtrasOriginal;
 let webpackServer;
-let spyExitCode;
-let spyPort;
+let _exitCode;
+let _port;
 
 /**
  * Stops the server.
@@ -45,7 +40,7 @@ function afterAll() {
   if (appExtrasOriginal) {
     resetAppExtras();
   }
-}
+};
 
 /**
  * Adds event listeners to serve and resolves a promise.
@@ -57,10 +52,10 @@ function bindServe() {
     webpackServer.stderr.on('data', data => log(data));
     webpackServer.stdout.on('data', data => {
       const dataAsString = log(data);
-      if (dataAsString.indexOf('Compiled successfully.') > -1) {
-        resolve(spyPort);
+      if (dataAsString.indexOf('webpack: Compiled successfully.') > -1) {
+        resolve(_port);
       }
-      if (dataAsString.indexOf('Failed to compile.') > -1) {
+      if (dataAsString.indexOf('webpack: Failed to compile.') > -1) {
         reject(dataAsString);
       }
     });
@@ -96,7 +91,7 @@ function exec(cmd, args, opts) {
  * Returns the last exit code.
  */
 function getExitCode() {
-  return spyExitCode;
+  return _exitCode;
 }
 
 /**
@@ -118,12 +113,12 @@ function prepareBuild(config) {
   function serve(exitCode) {
 
     // Save our exitCode for testing
-    spyExitCode = exitCode;
+    _exitCode = exitCode;
 
     // Reset skyuxconfig.json
     resetConfig();
 
-    return server.start({ sslCert, sslKey }, 'unused-root', tmp)
+    return server.start('unused-root', tmp)
       .then(port => browser.get(`https://localhost:${port}/dist/`));
   }
 
@@ -145,15 +140,15 @@ function prepareServe() {
 
   if (webpackServer) {
     return bindServe();
+  } else {
+    return new Promise((resolve, reject) => {
+      portfinder.getPortPromise()
+        .then(writeConfigServe)
+        .then(bindServe)
+        .then(resolve)
+        .catch(err => reject(err));
+    });
   }
-
-  return new Promise((resolve, reject) => {
-    portfinder.getPortPromise()
-      .then(writeConfigServe)
-      .then(bindServe)
-      .then(resolve)
-      .catch(err => reject(err));
-  });
 }
 
 /**
@@ -194,7 +189,7 @@ function writeConfig(json) {
  */
 function writeConfigServe(port) {
   return new Promise(resolve => {
-    spyPort = port;
+    _port = port;
     const skyuxConfigWithPort = merge(true, skyuxConfigOriginal, {
       app: {
         port: port
@@ -202,19 +197,7 @@ function writeConfigServe(port) {
     });
 
     writeConfig(skyuxConfigWithPort);
-
-    const args = [
-      cliPath,
-      `serve`,
-      `-l`,
-      `none`,
-      `--logFormat`,
-      `none`,
-      `--sslCert`,
-      sslCert,
-      `--sslKey`,
-      sslKey
-    ];
+    const args = [cliPath, `serve`, `-l`, `none`, `--logFormat`, `none`];
     webpackServer = childProcessSpawn(`node`, args, cwdOpts);
     resetConfig();
     resolve();
@@ -244,7 +227,7 @@ function writeAppFile(filePath, content) {
  */
 function verifyAppFolder(folderPath) {
   const resolvedFolderPath = path.join(path.resolve(tmp), 'src', 'app', folderPath);
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     if (!fs.existsSync(resolvedFolderPath)) {
       fs.mkdirSync(resolvedFolderPath);
     }
@@ -290,7 +273,5 @@ module.exports = {
   writeAppFile: writeAppFile,
   removeAppFolderItem: removeAppFolderItem,
   verifyAppFolder: verifyAppFolder,
-  writeAppExtras: writeAppExtras,
-  sslCert,
-  sslKey
+  writeAppExtras: writeAppExtras
 };

@@ -40,12 +40,10 @@ jspm_packages
 .DS_Store
 .e2e-tmp
 yarn.lock
-.skypageslocales
+package-lock.json
 
 # IntelliJ IDEA files
 .idea/
 *.iml
 *.ipr
 *.iws
-
-dist
