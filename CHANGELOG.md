@@ -1,203 +1,31 @@
-# 3.18.1 (2020-05-27)
+# 1.33.1 (2019-03-28)
 
-- Fixed the `esModuleInterop` compiler option to be opt-in since it was causing build issues with previously supported `import * as` imports. To enable `esModuleInterop` for your project, add the property to your SPA's local `tsconfig.json` file. [#265](https://github.com/blackbaud/skyux-sdk-builder/pull/265)
+- Added support for `@skyux/i18n@3.5.2` which fixes a circular reference error for later versions of SKY UX.
 
-```
-{
-  "compilerOptions": {
-    "esModuleInterop": true
-  }
-}
-```
+# 1.33.0 (2019-03-19)
 
-# 3.18.0 (2020-05-22)
+- Added support for `@skyux/i18n@3.5.1` and `@blackbaud/auth-client@2.13.0`. [#523](https://github.com/blackbaud/skyux-builder/pull/523)
 
-- Added the `esModuleInterop` property to `tsconfig.json`. [#261](https://github.com/blackbaud/skyux-sdk-builder/pull/261) (Thanks [@gabe-bergstrom](https://github.com/gabe-bergstrom)!)
+# 1.32.1 (2019-03-11)
 
-# 3.17.0 (2020-04-22)
+- Fixed module aliases to work properly for `skyux build` and `skyux e2e` commands. [#519](https://github.com/blackbaud/skyux-builder/pull/519)
 
-- Added theming support. [#242](https://github.com/blackbaud/skyux-sdk-builder/pull/242)
+# 1.32.0 (2019-03-04)
 
-# 3.16.2 (2020-03-23)
+- Added configuration option to allow for custom module resolution at build time. [#517](https://github.com/blackbaud/skyux-builder/pull/517)
 
-- Updated the version of `babel` to fix errors when running `skyux serve`. [#234](https://github.com/blackbaud/skyux-sdk-builder/pull/234)
+# 1.31.1 (2019-02-04)
 
-# 3.16.1 (2020-03-18)
+- Backported fix for `webpack-dev-server` to support Node 10. [#512](https://github.com/blackbaud/skyux-builder/pull/512)
 
-- Fixed the redirect for the empty-path (root) route. [#230](https://github.com/blackbaud/skyux-sdk-builder/pull/230)
+# 1.31.0 (2019-01-29)
 
-# 3.16.0 (2020-03-04)
-
-- Set the `viewportMarginTop` property on `SkyViewkeeperHostOptions` when the omnibar is enabled. [#227](https://github.com/blackbaud/skyux-sdk-builder/pull/227)
-
-# 3.15.2 (2020-02-25)
-
-- Updated the Webpack configuration to make `skyux serve` and `skyux test` work with IE 11. [#221](https://github.com/blackbaud/skyux-sdk-builder/pull/221)
-
-# 3.15.1 (2020-02-20)
-
-- Updated the Karma configuration to correctly proxy files from `~/assets` during `skyux test` and `skyux watch`. [#214](https://github.com/blackbaud/skyux-sdk-builder/pull/214)
-
-# 3.15.0 (2020-02-12)
-
-- Added support for `skyux build-public-library --fullTemplateTypeChecking`, which checks and validates TypeScript types within component HTML templates. [#208](https://github.com/blackbaud/skyux-sdk-builder/pull/208)
-
-# 3.14.0 (2020-02-07)
-
-- Updated `skyux serve` to include the `host` properties from `skyuxconfig.json` in the Host URL.
-- Moved help widget logic into the latest `@blackbaud/skyux-lib-help`. [#190](https://github.com/blackbaud/skyux-sdk-builder/pull/190)
-
-# 3.13.0 (2020-01-15)
-
-- Fixed the generation of coverage reports when running `skyux test`. [#194](https://github.com/blackbaud/skyux-sdk-builder/pull/194)
-- Added support for `--enableDesktopNotifications` and `--suppressUnfocusedTestOutput` flags to the `skyux test` command. [#186](https://github.com/blackbaud/skyux-sdk-builder/pull/186) [#187](https://github.com/blackbaud/skyux-sdk-builder/pull/187) Thanks, [@Blackbaud-JasonBodnar](https://github.com/Blackbaud-JasonBodnar)!
-
-# 3.12.0 (2019-12-02)
-
-- Added `SkyAppTitleService` to the Angular app's providers. When the omnibar is enabled, this is replaced with a service that updates the window title through the omnibar and preserves the selected service and number of unread notifications in the title. [#182](https://github.com/blackbaud/skyux-sdk-builder/pull/182)
-
-# 3.11.0 (2019-10-28)
-
-- Updated the local server to use the self-signed certificate implementation introduced in `@skyux-sdk/cli@3.2.0`. See the [SSL documentation](https://developer.blackbaud.com/skyux/learn/get-started/prereqs/ssl-certificate). [#168](https://github.com/blackbaud/skyux-sdk-builder/pull/168)
-
-# 3.10.0 (2019-09-30)
-
-- Upgraded `help-client` to `2.1.0`. [#161](https://github.com/blackbaud/skyux-sdk-builder/pull/161) Thanks, [@Blackbaud-ColbyWhite](https://github.com/Blackbaud-ColbyWhite)!
-- Removed the "Local Development Only" warning from the `index.html` produced during `skyux build`. [#163](https://github.com/blackbaud/skyux-sdk-builder/pull/163)
-- Updated the template used during `skyux build` to read the `skyuxconfig.json` `app.base` property. [#165](https://github.com/blackbaud/skyux-sdk-builder/pull/165)
-
-# 3.9.0 (2019-08-19)
-
-- Referenced a global instance of @blackbaud/auth-client to obtain BBID JWTs and load the omnibar. This enables the library to become a runtime dependency that you can update without redeploying the SPA. However, if the host page doesn't provide a global instance of @blackbaud\auth-client, then SKY UX Builder still uses the local version of the library in the SPA's bundle. [#154](https://github.com/blackbaud/skyux-sdk-builder/pull/154)
-
-# 3.8.1 (2019-07-26)
-
-- Added support for `@blackbaud/skyux-lib-help@3.1.1` which includes a fix for a missing provider. [#148](https://github.com/blackbaud/skyux-sdk-builder/pull/148)
-- Added support for `@pact-foundation/pact-node@9.0.0` to fix a vulnerability warning. [#141](https://github.com/blackbaud/skyux-sdk-builder/pull/141)
-- Fixed `skyux serve` to recompile if build errors are encountered. [#149](https://github.com/blackbaud/skyux-sdk-builder/pull/149)
-
-# 3.8.0 (2019-07-22)
-
-- Added support for `@blackbaud/skyux-lib-help@3.1.0`. [#139](https://github.com/blackbaud/skyux-sdk-builder/pull/139)
-- Added support for `@skyux/assets@3.1.0`. [#142](https://github.com/blackbaud/skyux-sdk-builder/pull/142)
-
-# 3.7.1 (2019-07-02)
-
-- Fixed the `skyux build` command to ignore a SPA's `fixtures` directories. [#136](https://github.com/blackbaud/skyux-sdk-builder/pull/136)
-- Fixed the package dependencies to install missing `ajv` package. [#131](https://github.com/blackbaud/skyux-sdk-builder/pull/131)
-- Fixed the invalid import statement generated by the `skyux generate component` command. [#135](https://github.com/blackbaud/skyux-sdk-builder/pull/135)
-- Fixed the package dependencies to install the correct version of `@types/jasmine`. [#134](https://github.com/blackbaud/skyux-sdk-builder/pull/134)
-- Removed the deprecated `no-use-before-declare` TSLint rule. [#130](https://github.com/blackbaud/skyux-sdk-builder/pull/130)
-
-# 3.7.0 (2019-06-21)
-
-- Added support for `karma-webpack@4.0.2`. [#127](https://github.com/blackbaud/skyux-sdk-builder/pull/127)
-- Added support for TSLint `@deprecated` JSDoc annotation. [#114](https://github.com/blackbaud/skyux-sdk-builder/pull/114)
-- Fixed `skyux build-public-library` to properly create UMD bundles. [#126](https://github.com/blackbaud/skyux-sdk-builder/pull/126)
-
-# 3.6.7 (2019-06-07)
-
-- Fixed **skyuxconfig.json** `moduleAliases` setting to function properly during AoT builds. [#120](https://github.com/blackbaud/skyux-sdk-builder/pull/120)
-- Fixed dependency vulnerabilities. [#118](https://github.com/blackbaud/skyux-sdk-builder/pull/118)
-
-# 3.6.6 (2019-05-14)
-
-- Fixed the `skyux test` error "Attempt to close tag classes when packages was the one open" by using specific versions of `istanbul-reports` and `istanbul-api`.  [#111](https://github.com/blackbaud/skyux-sdk-builder/pull/111)
-
-# 3.6.5 (2019-05-09)
-
-- Fixed `skyux test` and `skyux watch` to provide appropriate polyfills for Internet Explorer 11. [#107](https://github.com/blackbaud/skyux-sdk-builder/pull/107)
-
-# 3.6.4 (2019-05-08)
-
-- Fixed automated routing utility to register parameterized routes last. [#104](https://github.com/blackbaud/skyux-sdk-builder/issues/104)
-- Upgraded package dependencies to address vulnerability warnings during installation. [#97](https://github.com/blackbaud/skyux-sdk-builder/pull/97)
-
-# 3.6.3 (2019-05-02)
-
-- Replaced use of `http-server` during internal e2e tests. [#102](https://github.com/blackbaud/skyux-builder/pull/102)
-
-# 3.6.2 (2019-04-22)
-
-- Fixed `skyux serve` to ignore Typescript type checking for component test fixtures. [#92](https://github.com/blackbaud/skyux-sdk-builder/pull/92)
-- Fixed unit test coverage reports for Windows machines. [#94](https://github.com/blackbaud/skyux-sdk-builder/pull/94)
-
-# 3.6.1 (2019-04-18)
-
-- Fixed default logging level when using external configuration during `skyux test`. [#87](https://github.com/blackbaud/skyux-sdk-builder/pull/87)
-- Fixed issue with image assets being incorrectly copied during `skyux build`. [#89](https://github.com/blackbaud/skyux-sdk-builder/pull/89)
-
-# 3.6.0 (2019-04-12)
-
-- Added support for headless browsers during unit and e2e tests. [#78](https://github.com/blackbaud/skyux-sdk-builder/pull/78)
-- Added TSLint rules to warn consumers when using skipped tests and throw error when using focused tests. [#79](https://github.com/blackbaud/skyux-sdk-builder/pull/79)
-- Fixed test coverage to properly cover TypeScript class constructors. [#70](https://github.com/blackbaud/skyux-sdk-builder/pull/70)
-
-# 3.5.3 (2019-03-29)
-
-- Fixed `SkyPagesModule` to provide `SkyAppWindowRef`. [#74](https://github.com/blackbaud/skyux-sdk-builder/pull/74)
-
-# 3.5.2 (2019-03-13)
-
-- Updated `e2e` tests to use [@skyux-sdk-template](https://github.com/blackbaud/skyux-sdk-template). [#65](https://github.com/blackbaud/skyux-sdk-builder/pull/65)
-
-# 3.5.1 (2019-03-11)
-
-- Fixed module aliases to work properly for `skyux build` and `skyux e2e` commands. [#63](https://github.com/blackbaud/skyux-sdk-builder/pull/63)
-
-# 3.5.0 (2019-03-08)
-
-- Added `--no-lint` flag to `skyux watch` command to disable TSLint from firing after every test run. [#57](https://github.com/blackbaud/skyux-sdk-builder/pull/57)
-- Added `--fix` flag to `skyux lint` command to automatically fix any linting errors found. [#57](https://github.com/blackbaud/skyux-sdk-builder/pull/57)
-- Added configuration option to allow for custom module resolution at build time. [#56](https://github.com/blackbaud/skyux-sdk-builder/pull/56)
-- Upgraded package dependencies. [#53](https://github.com/blackbaud/skyux-sdk-builder/pull/53)
-- Fixed `skyux watch` command to properly handle browser disconnects. [#57](https://github.com/blackbaud/skyux-sdk-builder/pull/57)
-
-# 3.4.0 (2019-02-26)
-
-- Added support for `@blackbaud/skyux-lib-help@2.0.0`. [#45](https://github.com/blackbaud/skyux-sdk-builder/pull/45)
-- Fixed `SkyAppTestModule` to properly export its components. [#41](https://github.com/blackbaud/skyux-sdk-builder/pull/41)
-
-# 3.3.0 (2019-02-22)
-
-- Upgraded package dependencies. [#21](https://github.com/blackbaud/skyux-sdk-builder/pull/21)
-- Removed `web-animations-js` from dependencies since Angular no longer requires it for older browsers. [#12](https://github.com/blackbaud/skyux-sdk-builder/pull/12)
-- Fixed `skyux build` to not include test fixtures in the bundle. [#40](https://github.com/blackbaud/skyux-sdk-builder/pull/40)
-
-# 3.2.2 (2019-02-11)
-
-- Fixed TypeScript config to properly locate type roots when building public libraries. [#20](https://github.com/blackbaud/skyux-sdk-builder/pull/20)
-
-# 3.2.1 (2019-02-07)
-
-- Fixed issue with resolving dependencies when building public libraries. [#16](https://github.com/blackbaud/skyux-sdk-builder/pull/16)
-- Fixed issue where saving file did not trigger refresh when running `skyux serve`. [#19](https://github.com/blackbaud/skyux-sdk-builder/pull/19)
-
-# 3.2.0 (2019-02-01)
-
-- Added support for `@skyux/config@3.4.0`, which exposes `config.runtime.app.name` property. [#14](https://github.com/blackbaud/skyux-sdk-builder/pull/14)
-
-# 3.1.0 (2019-01-29)
-
-- Added support for `@skyux/config@3.3.0`. [#8](https://github.com/blackbaud/skyux-sdk-builder/pull/8)
-- Fixed webpack config to include `String.matches` polyfill in Internet Explorer 11. [#9](https://github.com/blackbaud/skyux-sdk-builder/pull/9)
-
-# 3.0.0 (2019-01-23)
-
-- Major version release.
-
-# 3.0.0-rc.1 (2019-01-22)
-
-- Added support for `@skyux-sdk/builder-config`. [#4](https://github.com/blackbaud/skyux-sdk-builder/pull/4)
-- Bugfix to address problems running `skyux build` and `skyux test` on Windows machines. [#4](https://github.com/blackbaud/skyux-sdk-builder/pull/4)
-
-# 3.0.0-rc.0 (2019-01-16)
-
-- Release candidate for SKY UX 3.
+ - Added support for `@skyux/config@3.3.0`. [#510](https://github.com/blackbaud/skyux-builder/pull/510)
+ - Added checks for existing file to `skyux generate`. [#500](https://github.com/blackbaud/skyux-builder/pull/500)
 
 # 1.30.0 (2018-11-26)
 
-- Added `SkyAuthHttpClientModule` that can be used in conjunction with Angular's `HttpClient` to make authenticated calls to services backed by Blackbaud ID. [blackbaud/skyux-http#11](https://github.com/blackbaud/skyux-http/pull/11)
+- Added `SkyAuthHttpClientModule` that can be used in conjunction with Angular's `HttpClient` to make authenticated calls to services backed by Blackbaud ID. (blackbaud/skyux-http#11)[https://github.com/blackbaud/skyux-http/pull/11]
 - Fixed coverage reports to accurately match against configured thresholds. [#499](https://github.com/blackbaud/skyux-builder/pull/499)
 
 # 1.29.0 (2018-11-09)
@@ -332,7 +160,7 @@
 
 - SKY UX libraries can now define their own locale files for localizing strings.  [#379](https://github.com/blackbaud/skyux-builder/pull/379)
 
-- Changed the webpack source map devtool from `cheap-module-eval-source-map` to `source-map`.  This fixes source maps in Firefox.  [#384](https://github.com/blackbaud/skyux-builder/pull/384)
+- Changed the Webpack source map devtool from `cheap-module-eval-source-map` to `source-map`.  This fixes source maps in Firefox.  [#384](https://github.com/blackbaud/skyux-builder/pull/384)
 
 - Added the ability to resolve a missing environment ID context before rendering the application.  For instance, if the `envid` parameter is required by your application, but none is supplied either through the query string or the SPA's `skyuxconfig.json` file, the user will be presented with a screen to select an environment. If the user is only in one environment, the application will automatically be reloaded with that environment.  [#399](https://github.com/blackbaud/skyux-builder/pull/399)
 

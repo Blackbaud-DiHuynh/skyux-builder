@@ -63,6 +63,26 @@ module.exports = {
       });
     }
 
+    // Allow SPAs to provide custom module aliases.
+    const moduleAliases = skyPagesConfig.skyux.moduleAliases;
+    if (moduleAliases) {
+      const command = skyPagesConfig.runtime.command;
+
+      Object.keys(moduleAliases).forEach((key) => {
+        const modulePath = moduleAliases[key];
+
+        switch (command) {
+          case 'build':
+          case 'e2e':
+            alias[key] = skyPagesConfigUtil.spaPathTemp(modulePath);
+            break;
+          default:
+            alias[key] = spaPath(modulePath);
+            break;
+        }
+      });
+    }
+
     setSpaAlias(
       alias,
       'src/app/app-extras.module',
